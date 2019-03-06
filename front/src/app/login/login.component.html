@@ -20,12 +20,8 @@
         <a routerLink="/register" class="btn btn-link">Register</a>
     </div>
     <div class="form-group">
-        <a href="{{oidcPrivderUrl}}"
-           class="btn btn-block btn-primary"
-           role="button"
-        >
-            Sign with oauth2/openid provider
-        </a>
-
+        <a href="{{implicitFlow}}" class="btn btn-block btn-info" role="button">Sign with oauth2/openid implicit flow</a>
+        <a href="{{authorizationCodeFlow}}" class="btn btn-block btn-primary" role="button">Sign with oauth2/openid code flow</a>
+        <a href="{{hackingRedirectUri}}" class="btn btn-block btn-danger" role="button">Sign with oauth2/openid hacked redirect_uri</a>
     </div>
 </form>

@@ -28,10 +28,19 @@ export class AuthenticationService {
 
         let headers = new HttpHeaders().set("Authorization","Basic " + btoa(username+":"+password));
 
-        return this.http.post<any>(`${config.loginUrl}/authenticate`, null, {headers})
+        return this.http.post<any>(`${config.loginUrl}/authenticate/basic`, null, {headers})
             .pipe(
                 mergeMap(res => {
-                    return this.logged(res.token);
+                    return this.logged(res.access_token);
+                })
+            )
+    }
+
+    code(code: string, state: string) {
+        return this.http.post<any>(`${config.loginUrl}/authenticate/oauth2/code?code=`+code+`&state=`+state, null)
+            .pipe(
+                mergeMap(res => {
+                    return this.logged(res.access_token);
                 })
             )
     }

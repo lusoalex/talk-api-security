@@ -11,7 +11,9 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
-    oidcPrivderUrl: string;
+    implicitFlow: string;
+    authorizationCodeFlow: string;
+    hackingRedirectUri: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -34,8 +36,10 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        //this.oidcPrivderUrl = "http://gateway:8092/confoo/oauth/authorize?scope=openid&state=state&response_type=token&client_id=api-security-talk&redirect_uri=http://localhost:8081/login?returnUrl=https://www.lequipe.fr";
-        this.oidcPrivderUrl = "http://gateway:8092/confoo/oauth/authorize?scope=openid&state=state&response_type=token&client_id=api-security-talk&redirect_uri=http://localhost:8081/login?returnUrl=http://localhost:8081/login";
+        this.implicitFlow = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8081/login";
+        this.authorizationCodeFlow = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8081/login";
+        //this.hackingRedirectUri = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8081/login?returnUrl=http://localhost:8082";
+        this.hackingRedirectUri = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8081/login/../hack";
 
         this.route.fragment.subscribe((fragment: string) => {
             if(fragment) {
@@ -50,7 +54,6 @@ export class LoginComponent implements OnInit {
                         user => {
                             console.log("user: "+user);
                             //this.router.navigate([this.returnUrl]); //--> This is the safe way...
-                            console.log("returnUrl: "+this.returnUrl);
                             //Adding intentionally a vulnerability for the api security talk
                             location.href = this.returnUrl;
                         },
@@ -60,6 +63,29 @@ export class LoginComponent implements OnInit {
                         });
             }
         })
+
+        this.route.queryParams.subscribe(queryParams => {
+            let code = queryParams['code'];
+            let state = queryParams['state'];
+            if(code) {
+                this.authenticationService.code(code,state)
+                    .pipe(first())
+                    .subscribe(
+                        data => {
+                            //this.router.navigate([this.returnUrl]); //--> This is the safe way...
+                            console.log(data);
+                            console.log(this.returnUrl);
+                            //Adding intentionally a vulnerability for the api security talk
+                            location.href = this.returnUrl;
+                        },
+                        error => {
+                            this.alertService.error(error);
+                            this.loading = false;
+                        });
+            }
+        })
+
+        this.route.params.subscribe()
     }
 
     // convenience getter for easy access to form fields
