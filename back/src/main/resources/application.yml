@@ -13,3 +13,10 @@ spring:
     console:
       enabled: true
       path: /console
+
+logging:
+  level:
+    root: WARN
+    reactor.ipc.netty.channel: ERROR
+    org.springframework.web.reactive.function.client.ExchangeFunctions: ERROR
+

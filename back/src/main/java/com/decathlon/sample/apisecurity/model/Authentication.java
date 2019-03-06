@@ -11,5 +11,5 @@ import lombok.experimental.Wither;
 @AllArgsConstructor
 public class Authentication {
 
-    private String token;
+    private String access_token;
 }
