@@ -1,13 +1,14 @@
 {
-    "name": "angular-7-registration-login-example",
+    "name": "secure-your-api-from-basics-to-beyond",
     "version": "1.0.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/cornflourblue/angular-7-registration-login-example.git"
+        "url": "https://github.com/lusoalex/talk-api-security.git"
     },
     "scripts": {
         "build": "webpack --mode production",
-        "start": "webpack-dev-server --mode development --open"
+        "start": "webpack-dev-server --mode production",
+        "dev": "webpack-dev-server --mode development --open"
     },
     "license": "MIT",
     "dependencies": {

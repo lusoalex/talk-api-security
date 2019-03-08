@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gravitee-am.refresh_tokens"},{"v":2,"key":{"expire_at":1},"name":"expire_at_1","ns":"gravitee-am.refresh_tokens","expireAfterSeconds":{"$numberLong":"0"}},{"v":2,"key":{"token":1},"name":"token_1","ns":"gravitee-am.refresh_tokens"}]}

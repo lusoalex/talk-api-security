@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.lusoalex</groupId>
+        <artifactId>lusoalex-parent</artifactId>
+        <version>0.1</version>
+    </parent>
+
+    <groupId>com.github.lusoalex</groupId>
+    <artifactId>talk-api-security</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/lusoalex/talk-api-security</url>
+        <connection>https://github.com/lusoalex/talk-api-security.git</connection>
+        <developerConnection>scm:git:https://github.com/lusoalex/talk-api-security.git</developerConnection>
+      <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/lusoalex/talk-api-security/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <developers>
+         <developer>
+             <email>contact@alexandrefaria.net</email>
+             <name>Alexandre Faria</name>
+             <url>https://github.com/lusoalex</url>
+             <id>lusoalex</id>
+         </developer>
+     </developers>
+
+     <modules>
+         <module>back</module>
+         <module>front</module>
+     </modules>
+
+</project>

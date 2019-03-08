@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gravitee.audits"},{"v":2,"key":{"referenceType":1.0,"referenceId":1.0},"name":"referenceType_1_referenceId_1","ns":"gravitee.audits"},{"v":2,"key":{"createdAt":1.0},"name":"createdAt_1","ns":"gravitee.audits"}]}

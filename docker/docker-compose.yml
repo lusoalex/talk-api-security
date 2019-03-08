@@ -1,0 +1,199 @@
+version: '3.5'
+
+networks:
+  frontend:
+    name: frontend
+  storage:
+    name: storage
+
+services:
+
+  #Back office (login & user API)
+  back:
+    image: lusoalex/talk-api-security-back:latest
+    build: ../back
+    container_name: ${TALK_SECURE_API_BACK}
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - 8880:8880
+    networks:
+      - frontend
+
+  #Front office (angular login page & screens)
+  front:
+    image: lusoalex/talk-api-security-front:latest
+    build: ../front
+    container_name: ${TALK_SECURE_API_FRONT}
+    ports:
+      - 8888:8888
+    depends_on:
+      - back
+
+  traefik:
+    image: traefik
+    container_name: ${GIO_TRAEFIK}
+    command: --api --docker
+    ports:
+      # only expose https to outside world
+      - "443:443"   # SSL
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "$PWD/traefik/config/traefik.toml:/etc/traefik/traefik.toml"
+      - "$PWD/traefik/certs/:/certs/"
+    labels:
+      - "traefik.enable=true"
+    depends_on:
+      - apim_gateway
+      - apim_portal
+      - apim_management
+      - am_gateway
+      - am_management
+      - am_webui
+    networks:
+      frontend:
+        aliases:
+          - am.gravitee.io
+
+  mongodb:
+    image: mongo:3.4
+    container_name: ${GIO_MONGODB}
+#    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=gravitee
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - ./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data/mongo:/data/db
+    networks:
+      - storage
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    container_name: ${GIO_ELASTIC}
+#    restart: always
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=0.0.0.0
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - cluster.name=elasticsearch
+    ulimits:
+      nofile: 65536
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - storage
+
+  apim_gateway:
+    image: graviteeio/gateway:${GIO_APIM_VERSION}
+    container_name: ${GIO_APIM_GATEWAY}
+    ports:
+      - 8082:8082
+#    restart: always
+    environment:
+      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_ratelimit_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_reporters_elasticsearch_endpoints_0=http://elasticsearch:9200
+    labels:
+      - "traefik.frontend.rule=Host:apim.gravitee.io"
+      - "traefik.backend=graviteeio-apim-gateway"
+      - "traefik.port=8082"
+    depends_on:
+      - mongodb
+      - elasticsearch
+      - back
+    networks:
+      - storage
+      - frontend
+
+  apim_portal:
+    image: graviteeio/management-ui:${GIO_APIM_VERSION}
+    container_name: ${GIO_APIM_WEBUI}
+#    restart: always
+    environment:
+      - MGMT_API_URL=https:\/\/apim.gravitee.io\/management\/
+    labels:
+      - "traefik.frontend.rule=Host:apim.gravitee.io;PathPrefixStrip:/portal/"
+    depends_on:
+      - apim_management
+    networks:
+      - frontend
+
+  apim_management:
+    image: graviteeio/management-api:${GIO_APIM_VERSION}
+    container_name: ${GIO_APIM_MANAGEMENT}
+#    restart: always
+    environment:
+      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_ratelimit_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_analytics_elasticsearch_endpoints_0=http://elasticsearch:9200
+      - gravitee_jwt_cookiepath=/management
+      - gravitee_jwt_cookiesecure=true
+      - gravitee_jwt_cookiedomain=apim.gravitee.io
+    labels:
+      - "traefik.frontend.rule=Host:apim.gravitee.io;PathPrefix:/management"
+      - "traefik.backend=graviteeio-apim-management-api"
+      - "traefik.port=8083"
+    depends_on:
+      - mongodb
+      - elasticsearch
+    networks:
+      - storage
+      - frontend
+
+  am_gateway:
+    image: graviteeio/am-gateway:${GIO_AM_VERSION}
+    container_name: ${GIO_AM_GATEWAY}
+#    restart: always
+    environment:
+      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+    labels:
+      - "traefik.backend=graviteeio-am-gateway"
+      - "traefik.frontend.rule=Host:am.gravitee.io;PathPrefixStrip:/auth"
+      - "traefik.port=8092"
+    depends_on:
+      - mongodb
+    networks:
+      - storage
+      - frontend
+
+  am_management:
+    image: graviteeio/am-management-api:${GIO_AM_VERSION}
+    container_name: ${GIO_AM_MANAGEMENT}
+#    restart: always
+    environment:
+      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - gravitee_jwt_cookiepath=/
+      - gravitee_jwt_cookiesecure=true
+      - gravitee_jwt_cookiedomain=am.gravitee.io
+    labels:
+      - "traefik.backend=graviteeio-am-managementapi"
+      - "traefik.frontend.rule=Host:am.gravitee.io;PathPrefix:/management,/admin"
+      - "traefik.port=8093"
+    depends_on:
+      - mongodb
+    networks:
+      - storage
+      - frontend
+
+  am_webui:
+    image: graviteeio/am-management-ui:${GIO_AM_VERSION}
+    container_name: ${GIO_AM_WEBUI}
+#    restart: always
+    environment:
+      - MGMT_API_URL=https:\/\/am.gravitee.io\/
+      - MGMT_UI_URL=https:\/\/am.gravitee.io\/
+    labels:
+      - "traefik.backend=graviteeio-am-managementui"
+      - "traefik.frontend.rule=Host:am.gravitee.io"
+    depends_on:
+      - am_management
+    networks:
+      - frontend

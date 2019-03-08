@@ -6,3 +6,7 @@
 *.iws
 *.iml
 *.ipr
+
+### Docker generated data ###
+docker/data/
+docker/logs/

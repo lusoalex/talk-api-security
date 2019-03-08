@@ -32,8 +32,7 @@ module.exports = {
         new webpack.DefinePlugin({
             // global app config object
             config: JSON.stringify({
-                apiUrl: 'http://localhost:8080',
-                loginUrl:'http://localhost:8080'
+                apiUrl: process.env.API_URL || 'http://localhost:8880'
             })
         })
     ],
@@ -45,6 +44,6 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
-        port:8081
+        port:8888
     }
 };

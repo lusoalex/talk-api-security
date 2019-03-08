@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gravitee-am.forms"},{"v":2,"key":{"domain":1},"name":"domain_1","ns":"gravitee-am.forms"},{"v":2,"key":{"domain":1,"template":1},"name":"domain_1_template_1","ns":"gravitee-am.forms"},{"v":2,"key":{"domain":1,"client":1,"template":1},"name":"domain_1_client_1_template_1","ns":"gravitee-am.forms"}]}

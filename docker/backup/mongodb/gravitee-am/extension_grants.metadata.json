@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"gravitee-am.extension_grants"},{"v":2,"key":{"domain":1},"name":"domain_1","ns":"gravitee-am.extension_grants"},{"v":2,"key":{"domain":1,"grantType":1},"name":"domain_1_grantType_1","ns":"gravitee-am.extension_grants"}]}
