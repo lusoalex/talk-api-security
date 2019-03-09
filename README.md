@@ -20,9 +20,7 @@ If you run the full stack (gravitee api management & access management) in addit
 then please make sure to follow these two below recommendations : 
 
 _**#1:** Declare two domains into your /etc/hosts by running `sudo vi /etc/hosts` and add following value:_  
-
-| 127.0.0.1     | apim.gravitee.io am.gravitee.io |
-| ------------- |: -------------: |
+`127.0.0.1      apim.gravitee.io am.gravitee.io`
 
 
 _**#2:** Upgrade default memory allocation to Docker For Mac (default 2, use at least 4 as described below)_  
