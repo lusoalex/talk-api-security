@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "f5e46fb9-667f-4b74-8609-9194d1823f82",
+		"name": "talk_api_security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authenticate basic",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5417fe2e-4df2-410d-9ed5-1f741a5f0ab8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "lusoalex",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "lusoalex",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8880/authenticate/basic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8880",
+					"path": [
+						"authenticate",
+						"basic"
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "List users - direct api access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5417fe2e-4df2-410d-9ed5-1f741a5f0ab8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8880/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8880",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "Create user - direct api access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5417fe2e-4df2-410d-9ed5-1f741a5f0ab8",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Testing username\", function () {",
+							"    var data = pm.response.json();",
+							"    pm.expect(data.username).to.eql(\"cr7\");",
+							"    pm.globals.set('id', data.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Cristiano\",\n    \"lastName\": \"Ronaldo\",\n    \"username\": \"cr7\",\n    \"password\": \"cr7\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8880/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8880",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "Update user - direct api access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5417fe2e-4df2-410d-9ed5-1f741a5f0ab8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Testing username\", function () {",
+							"    var data = pm.response.json();",
+							"    pm.expect(data.username).to.eql(\"cr77\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"{{id}}\",\n    \"firstName\": \"Cristiano\",\n    \"lastName\": \"Ronaldo\",\n    \"username\": \"cr77\",\n    \"password\": \"cr77\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8880/users/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8880",
+					"path": [
+						"users",
+						"{{id}}"
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user - direct api access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "afb79e83-70d3-4a46-8732-7493049e5195",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8880/users/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8880",
+					"path": [
+						"users",
+						"{{id}}"
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "List users - througth API Management",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "afb79e83-70d3-4a46-8732-7493049e5195",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Gravitee-Api-Key",
+						"value": "4d58b5f6-88dc-4253-8f80-a70aca9d2989",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "List users - througth API Management Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "afb79e83-70d3-4a46-8732-7493049e5195",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Gravitee-Api-Key",
+						"value": "4d58b5f6-88dc-4253-8f80-a70aca9d2989",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user - througth API Management",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c37219b7-8a44-472f-810d-c1be9fbc4989",
+						"exec": [
+							"pm.test(\"Status code is 200 - GET verb allowed\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Gravitee-Api-Key",
+						"value": "4d58b5f6-88dc-4253-8f80-a70aca9d2989",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/users/f90df750-3069-48e6-8df7-50306988e691",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"users",
+						"f90df750-3069-48e6-8df7-50306988e691"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user - without api-key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c37219b7-8a44-472f-810d-c1be9fbc4989",
+						"exec": [
+							"pm.test(\"Unauthorized 401 - API Key is required\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/users/f90df750-3069-48e6-8df7-50306988e691",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"users",
+						"f90df750-3069-48e6-8df7-50306988e691"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate basic - path and method not allowed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5417fe2e-4df2-410d-9ed5-1f741a5f0ab8",
+						"exec": [
+							"pm.test(\"Not allowed 403 - Path & vert not white listed...\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "lusoalex",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "lusoalex",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Gravitee-Api-Key",
+						"value": "4d58b5f6-88dc-4253-8f80-a70aca9d2989",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/authenticate/basic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"authenticate",
+						"basic"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				},
+				"description": "Access to the endpoint /users but through the API Management gateway which require an api-key"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user - througth API Management",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "857f416c-cd64-4b5d-bbb3-c9f202f4bad6",
+						"exec": [
+							"pm.test(\"Status code is 403 - DELETE verb not allowed\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Gravitee-Api-Key",
+						"type": "text",
+						"value": "4d58b5f6-88dc-4253-8f80-a70aca9d2989"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/confoo/users/f90df750-3069-48e6-8df7-50306988e691",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"confoo",
+						"users",
+						"f90df750-3069-48e6-8df7-50306988e691"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

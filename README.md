@@ -64,21 +64,22 @@ For the first time run cmd `make init` else run cmd `make start` or have a look 
 
 ## Play with API & login page
 
-You can login with lusoalex/lusoalex using the login password fields, it will use /authenticate/basic endpoint.  
+You can import this into your postman (collection v2.1) : _(click on below link)_  
+[![Postman collection](https://www.getpostman.com/img/logos/postman/header-treatment.svg "Postman collection")](docs/postman/talk_api_security.postman_collection.json)
 
 ### SQL injection
 
 Target here is only to show an example of injection which is currently the number 1 in the [OWASP](https://owasp.org) top 10. (latest owasp report was 2017)  
 
-We will inject some sql in the form field. A common injection is to inject in the 2dn field form this value `something' or 1=1 --`  
-For the demo effect i will use instead `something' or username='admin' --`
+We will inject some sql in the form field (password field). A common injection is to input `something' or 1=1 --`, in our case, for the demo effect, we will use instead `something' or username='admin' --`  
 
 ### JWT Brute force 
 
 By exploring the browser console, we can see that a JWT token is saved on the local storage.  
 By decoding (BASE64) the token _or do it thanks to https://www.jwt.io_, we see that the token use HS256 encryption.  
-HS256 is symetric encryption, i will then use a tool to try to get the shared secret. I use here [brendan rius jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker)  
-This tool can find secret when they are too small, which is our case.  
+HS256 is symetric encryption, i will then use a tool to try to get the shared secret. I use here [brendan rius jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker), this tool can find secret when they are too small, which is our case.   
+You can find others tool with different way of finding the shared secret, like trying all password included in a file instead of doing brut force  
+
 Once we have the secret we can generate by ourself a token, use it to replace the current local storage token.  
 Just need to refresh and see what happens... 
 
@@ -91,8 +92,6 @@ There's plenty of oauth2 hacks that happens in past years (facebook, google, git
 
 My expectations here is only to show that we must always do exact matching on redirect, avoiding regex, wildcard & so on.  
 The client settings has a https://localhost:8888/login* redirect_uri, you can then change the redirect_uri with http://localhost:8888/login/../hack  
-_Right we are in the same app, that's already a hack anyway, there are some other hacks possible anyway...  
-Plus, just think about some tools that has the same domain such as https://github.com/lusoalex and https://github.com/anotherId_
 
 
 ## Play with API Management
@@ -119,7 +118,7 @@ If you try to access to confoo/authenticate/basic, you'll get a 403 with api key
 curl -X POST http://localhost:8082/confoo/authenticate/basic -H 'X-Gravitee-Api-Key: 4d58b5f6-88dc-4253-8f80-a70aca9d2989' -H 'Authorization: Basic bHVzb2FsZXg6bHVzb2FsZXg='
 `
 
- * Path ok but not http verb :
+ * Path ok but not the http verb :
 `
 curl -X DELETE http://localhost:8082/confoo/users/f90df750-3069-48e6-8df7-50306988e691 -H 'X-Gravitee-Api-Key: 4d58b5f6-88dc-4253-8f80-a70aca9d2989'
 `
