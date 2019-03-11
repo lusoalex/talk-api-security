@@ -2,6 +2,7 @@
 
 - [Securing an API - From basics to beyond](#securing-an-api---from-basics-to-beyond)
   - [Requirements](#requirements)
+  - [Architecture](#architecture)
   - [Important settings](#important-settings)
   - [Install & Run](#install--run)
   - [Usefull links](#usefull-links)
@@ -21,7 +22,6 @@
 
 
 
-
 # Securing an API - From basics to beyond
 
 This repository is used to accompany and illustrate some security vulnerabilities highlighted during the _**[Securing an API - From basics to beyond](https://lusoalex.github.io#talks)**_ talk.
@@ -37,6 +37,15 @@ This repository is used to accompany and illustrate some security vulnerabilitie
  * [NodeJs](https://nodejs.org/en/) - Javascript runtime / Front - v10.7.0+
  * [Docker](https://docs.docker.com/engine/installation) - Docker Engine release - 17.12.0+
  * [Docker-compose](https://docs.docker.com/compose/install) - compose - 1.23+
+
+## Architecture
+We have four stacks for this demo :
+ * A web application - _[Angular](https://angular.io/)_
+ * An API - _[Spring boot](https://spring.io/projects/spring-boot)_
+ * An Authorization Server - _[Gravitee Acces Management](https://gravitee.io)_
+ * An API Management - _[Gravitee API Management](https://gravitee.io)_
+ 
+![Alt text](docs/images/architecture_overview.png "Architecture overview")
 
 ## Important settings
 
