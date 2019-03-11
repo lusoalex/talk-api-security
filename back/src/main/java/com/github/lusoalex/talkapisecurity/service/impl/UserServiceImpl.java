@@ -39,13 +39,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<User> register(User user) {
         return Mono.just(user)
-                .map(userRepository::save)
+                .map(userRepository::save);/*
                 .onErrorResume(throwable -> {
                     if(throwable instanceof ConstraintViolationException) {
                         return Mono.error(new Exception("Please choose another username."));
                     }
                     return Mono.error(throwable);
-                });
+                });*/
     }
 
     @Override
