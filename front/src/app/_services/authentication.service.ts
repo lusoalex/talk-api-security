@@ -79,4 +79,8 @@ export class AuthenticationService {
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
     }
+
+    identityProvider() {
+        return `${config.amUrl}/confoo/oauth`;
+    }
 }

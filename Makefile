@@ -20,9 +20,6 @@ init: start restoreMongo ## Init project for the first time (else run make start
 start: ## Start all containers
 	cd docker ; docker-compose up -d;
 
-start_light: ## Only start api & front
-	cd docker ; docker-compose up -d back front;
-
 stop: ## Stop all containers
 	cd docker; docker-compose stop;
 

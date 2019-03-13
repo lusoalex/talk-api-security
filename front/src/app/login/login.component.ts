@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        this.implicitFlow = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8888/login";
-        this.authorizationCodeFlow = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8888/login";
-        //this.hackingRedirectUri = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8888/login?returnUrl=http://localhost:8082";
-        this.hackingRedirectUri = "http://gateway:8092/confoo/oauth/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8888/login/../hack";
+        this.implicitFlow = this.authenticationService.identityProvider()+"/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8888/login";
+        this.authorizationCodeFlow = this.authenticationService.identityProvider()+"/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8888/login";
+        //this.hackingRedirectUri = this.authenticationService.identityProvider()+"/authorize?client_id=api-security-talk&response_type=code&state=state&scope=openid&redirect_uri=http://localhost:8888/login?returnUrl=http://localhost:8082";
+        this.hackingRedirectUri = this.authenticationService.identityProvider()+"/authorize?client_id=api-security-talk&response_type=token&state=state&scope=openid&redirect_uri=http://localhost:8888/login/../hack";
 
         this.route.fragment.subscribe((fragment: string) => {
             if(fragment) {

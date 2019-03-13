@@ -1,11 +1,5 @@
 version: '3.5'
 
-networks:
-  frontend:
-    name: frontend
-  storage:
-    name: storage
-
 services:
 
   #Back office (login & user API)
@@ -17,14 +11,16 @@ services:
       - "traefik.enable=false"
     ports:
       - 8880:8880
-    networks:
-      - frontend
 
   #Front office (angular login page & screens)
   front:
     image: lusoalex/talk-api-security-front:latest
     build: ../front
     container_name: ${TALK_SECURE_API_FRONT}
+    labels:
+      - "traefik.enable=false"
+    environment:
+      - AM_URL=${GIO_AM_ENDPOINT}
     ports:
       - 8888:8888
     depends_on:
@@ -51,10 +47,6 @@ services:
       - am_gateway
       - am_management
       - am_webui
-    networks:
-      frontend:
-        aliases:
-          - am.gravitee.io
 
   mongodb:
     image: mongo:3.4
@@ -67,8 +59,6 @@ services:
     volumes:
       - ./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./data/mongo:/data/db
-    networks:
-      - storage
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
@@ -86,8 +76,6 @@ services:
       - "traefik.enable=false"
     volumes:
       - ./data/elasticsearch:/usr/share/elasticsearch/data
-    networks:
-      - storage
 
   apim_gateway:
     image: graviteeio/gateway:${GIO_APIM_VERSION}
@@ -107,9 +95,6 @@ services:
       - mongodb
       - elasticsearch
       - back
-    networks:
-      - storage
-      - frontend
 
   apim_portal:
     image: graviteeio/management-ui:${GIO_APIM_VERSION}
@@ -121,8 +106,6 @@ services:
       - "traefik.frontend.rule=Host:apim.gravitee.io;PathPrefixStrip:/portal/"
     depends_on:
       - apim_management
-    networks:
-      - frontend
 
   apim_management:
     image: graviteeio/management-api:${GIO_APIM_VERSION}
@@ -142,9 +125,6 @@ services:
     depends_on:
       - mongodb
       - elasticsearch
-    networks:
-      - storage
-      - frontend
 
   am_gateway:
     image: graviteeio/am-gateway:${GIO_AM_VERSION}
@@ -159,9 +139,6 @@ services:
       - "traefik.port=8092"
     depends_on:
       - mongodb
-    networks:
-      - storage
-      - frontend
 
   am_management:
     image: graviteeio/am-management-api:${GIO_AM_VERSION}
@@ -179,9 +156,6 @@ services:
       - "traefik.port=8093"
     depends_on:
       - mongodb
-    networks:
-      - storage
-      - frontend
 
   am_webui:
     image: graviteeio/am-management-ui:${GIO_AM_VERSION}
@@ -195,5 +169,3 @@ services:
       - "traefik.frontend.rule=Host:am.gravitee.io"
     depends_on:
       - am_management
-    networks:
-      - frontend
