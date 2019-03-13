@@ -30,13 +30,15 @@ This repository is used to accompany and illustrate some security vulnerabilitie
 
 ## Requirements
 
- * [GIT](https://git-scm.com) - Seems obvious right... - 2.20.1+ 
- * [Maven](https://maven.apache.org/) - Dependency Management / Back - 3.3.9+ 
- * [Java](https://www.java.com) - Compilation & runtime / Back - Java 8+ 
- * [Npm](https://www.npmjs.com/) - Dependency Management / Front - 6.8.0+ 
- * [NodeJs](https://nodejs.org/en/) - Javascript runtime / Front - v10.7.0+
+ * [GIT](https://git-scm.com) - Seems obvious right... - 2.20.1+
  * [Docker](https://docs.docker.com/engine/installation) - Docker Engine release - 17.12.0+
  * [Docker-compose](https://docs.docker.com/compose/install) - compose - 1.23+
+
+ To run api & angular web app :   
+ * [Maven](https://maven.apache.org/) - Dependency Management / Back - 3.3.9+
+ * [Java](https://www.java.com) - Compilation & runtime / Back - Java 8+
+ * [Npm](https://www.npmjs.com/) - Dependency Management / Front - 6.8.0+
+ * [NodeJs](https://nodejs.org/en/) - Javascript runtime / Front - v10.7.0+
 
 ## Architecture
 We have four stacks for this demo :
@@ -44,13 +46,13 @@ We have four stacks for this demo :
  * An API - _[Spring boot](https://spring.io/projects/spring-boot)_
  * An Authorization Server - _[Gravitee Acces Management](https://gravitee.io)_
  * An API Management - _[Gravitee API Management](https://gravitee.io)_
- 
+
 ![Alt text](docs/images/architecture_overview.png "Architecture overview")
 
 ## Important settings
 
 If you run the full stack (gravitee api management & access management) in addition to the initial spring boot api & angular website,
-then please make sure to follow these two below recommendations : 
+then please make sure to follow these two below recommendations :
 
 _**#1:** Declare two domains into your /etc/hosts by running `sudo vi /etc/hosts` and add following value:_  
 `127.0.0.1      apim.gravitee.io am.gravitee.io`
@@ -65,9 +67,9 @@ For the first time run cmd `make init` else run cmd `make start` or have a look 
 
 ## Usefull links
 
- * API - Database access : [http://localhost:8880/console](http://localhost:8880/console) - _jdbc:h2:mem:testdb_
- * API - Swagger specifications : [http://localhost:8880/swagger-ui.html](http://localhost:8880/swagger-ui.html)
  * Front - Single Page App Demo : [http://localhost:8888](http://localhost:8888) - lusoalex/lusoalex
+ * API - Swagger specifications : [http://localhost:8880/swagger-ui.html](http://localhost:8880/swagger-ui.html)
+ * API - Database access : [http://localhost:8880/console](http://localhost:8880/console) - _jdbc:h2:mem:testdb_
  * Gravitee Access Management : [https://am.gravitee.io/ui](https://am.gravitee.io/ui) - admi/admin
  * Gravitee API Management : [https://apim.gravitee.io/portal/](https://apim.gravitee.io/portal/) - admin/adminadmin
  * Traefik Dashboard : [http://localhost:8080/dashboard/](http://localhost:8080/dashboard/)
@@ -83,7 +85,7 @@ Target here is only to show an example of injection which is currently the numbe
 
 We will inject some sql in the form field (password field). A common injection is to input `something' or 1=1 --`, in our case, for the demo effect, we will use instead `something' or username='admin' --`  
 
-### JWT Brute force 
+### JWT Brute force
 
 By exploring the browser console, we can see that a JWT token is saved on the local storage.  
 By decoding (BASE64) the token _or do it thanks to https://www.jwt.io_, we see that the token use HS256 encryption.  
@@ -91,7 +93,7 @@ HS256 is symetric encryption, i will then use a tool to try to get the shared se
 You can find others tool with different way of finding the shared secret, like trying all password included in a file instead of doing brut force  
 
 Once we have the secret we can generate by ourself a token, use it to replace the current local storage token.  
-Just need to refresh and see what happens... 
+Just need to refresh and see what happens...
 
 ## Play with Oauth2
 
@@ -111,7 +113,7 @@ By restoring current mongo settings, the above API will be exposed through the A
  * Call API through Gateway :  
 `
 curl -X GET http://localhost:8082/confoo/users -H 'X-Gravitee-Api-Key: 4d58b5f6-88dc-4253-8f80-a70aca9d2989'
-` 
+`
 
  * Call API through Gateway :  
 `
@@ -121,7 +123,7 @@ curl -X GET http://localhost:8082/confoo/users/f90df750-3069-48e6-8df7-50306988e
 ### Security
 
 I used a white list on the API endpoint to allow only **/users** and **/users/** endpoint access and **GET http verb** only and forbid all others paths.  
-If you try to access to confoo/authenticate/basic, you'll get a 403 with api key, and 401 without api key. 
+If you try to access to confoo/authenticate/basic, you'll get a 403 with api key, and 401 without api key.
 
  * Path not white listed API endpoint :  
 `
@@ -144,7 +146,7 @@ _**this is not a benchmark...**_
  * On Linux : [documentation](https://github.com/wg/wrk/wiki/Installing-Wrk-on-Linux)
  * On Mac OS : [documentation](https://github.com/wg/wrk/wiki/Installing-wrk-on-OS-X)
 
-#### Run wrk command 
+#### Run wrk command
 
 Generate many requests for 10 seconds, using 12 threads, and keeping 400 HTTP connections open.  
 
