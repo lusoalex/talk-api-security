@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Value("${secret:decat}")
+    @Value("${jwt.secret:decat}")
     private String secret;
 
     @Autowired

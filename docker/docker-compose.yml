@@ -7,6 +7,8 @@ services:
     image: lusoalex/talk-api-security-back:latest
     build: ../back
     container_name: ${TALK_SECURE_API_BACK}
+    environment:
+      - jwt.secret=${JWT_WEAK_SECRET}
     labels:
       - "traefik.enable=false"
     ports:
@@ -133,6 +135,7 @@ services:
     environment:
       - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
       - gravitee_oauth2_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      - jwt.secret=${GIO_SECRET}
     labels:
       - "traefik.backend=graviteeio-am-gateway"
       - "traefik.frontend.rule=Host:am.gravitee.io;PathPrefixStrip:/auth"
@@ -150,6 +153,7 @@ services:
       - gravitee_jwt_cookiepath=/
       - gravitee_jwt_cookiesecure=true
       - gravitee_jwt_cookiedomain=am.gravitee.io
+      - jwt.secret=${GIO_SECRET}
     labels:
       - "traefik.backend=graviteeio-am-managementapi"
       - "traefik.frontend.rule=Host:am.gravitee.io;PathPrefix:/management,/admin"
