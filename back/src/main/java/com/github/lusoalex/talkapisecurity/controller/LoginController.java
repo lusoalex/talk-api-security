@@ -3,12 +3,17 @@ package com.github.lusoalex.talkapisecurity.controller;
 import com.github.lusoalex.talkapisecurity.model.Authentication;
 import com.github.lusoalex.talkapisecurity.model.User;
 import com.github.lusoalex.talkapisecurity.service.UserService;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +27,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.SSLException;
 import java.util.Base64;
 
 @CrossOrigin
@@ -60,7 +66,7 @@ public class LoginController {
 
     @ApiOperation(value = "Oauth2 code callback endpoint", response = User.class)
     @PostMapping(value = "/oauth2/code", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Publisher<String> code(@RequestParam String code, @RequestParam String state) {
+    public Publisher<String> code(@RequestParam String code, @RequestParam String state) throws SSLException {
 
         String credentials = new String(Base64.getEncoder().encode((client_id+":"+client_secret).getBytes()));
 
@@ -71,9 +77,15 @@ public class LoginController {
         map.add("redirect_uri","http://localhost:8081/login");
         map.add("scope","openid");
 
+        SslContext sslContext = SslContextBuilder
+                .forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)//only for demo...
+                .build();
+
         return WebClient
                 //create request
                 .builder()
+                .clientConnector(new ReactorClientHttpConnector(opt -> opt.sslContext(sslContext)))
                 .baseUrl(provider)
                 .filter(ExchangeFilterFunctions.basicAuthentication(client_id, client_secret))
                 .build()

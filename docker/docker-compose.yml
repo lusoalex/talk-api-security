@@ -9,6 +9,7 @@ services:
     container_name: ${TALK_SECURE_API_BACK}
     environment:
       - jwt.secret=${JWT_WEAK_SECRET}
+      - provider=${OPENID_PROVIDER}
     labels:
       - "traefik.enable=false"
     ports:
@@ -131,6 +132,8 @@ services:
   am_gateway:
     image: graviteeio/am-gateway:${GIO_AM_VERSION}
     container_name: ${GIO_AM_GATEWAY}
+    ports:
+      - 8092:8092
 #    restart: always
     environment:
       - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee-am?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
