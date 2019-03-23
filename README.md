@@ -59,6 +59,7 @@ _**#1:** Declare two domains into your /etc/hosts by running `sudo vi /etc/hosts
 
 
 _**#2:** Upgrade default memory allocation to Docker For Mac (default 2, use at least 4 as described below)_  
+
 ![Alt text](docs/images/dockerForMacSettings.png "Docker for MAC settings")  
 
 ## Install & Run
