@@ -90,7 +90,9 @@ We will inject some sql in the form field (password field). A common injection i
 By exploring the browser console, we can see that a JWT token is saved on the local storage.  
 By decoding (BASE64) the token _or do it thanks to https://www.jwt.io_, we see that the token use HS256 encryption.  
 HS256 is symetric encryption, i will then use a tool to try to get the shared secret. I use here [brendan rius jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker), this tool can find secret when they are too small, which is our case.   
-You can find others tool with different way of finding the shared secret, like trying all password included in a file instead of doing brut force  
+You can find others tool with different way of finding the shared secret, like trying all password included in a file instead of doing brut force
+
+![Alt text](docs/images/jwtCrack.png "brute force shared secret on Json Web Token")
 
 Once we have the secret we can generate by ourself a token, use it to replace the current local storage token.  
 Just need to refresh and see what happens...
