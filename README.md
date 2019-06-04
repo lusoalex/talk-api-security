@@ -71,8 +71,8 @@ For the first time run cmd `make init` else run cmd `make start` or have a look 
  * Front - Single Page App Demo : [http://localhost:8888](http://localhost:8888) - lusoalex/lusoalex
  * API - Swagger specifications : [http://localhost:8880/swagger-ui.html](http://localhost:8880/swagger-ui.html)
  * API - Database access : [http://localhost:8880/console](http://localhost:8880/console) - _jdbc:h2:mem:testdb_
- * Gravitee Access Management : [https://am.gravitee.io/ui](https://am.gravitee.io/ui) - admi/admin
- * Gravitee API Management : [https://apim.gravitee.io/portal/](https://apim.gravitee.io/portal/) - admin/adminadmin
+ * Gravitee Access Management : [https://am.gravitee.io/ui](https://am.gravitee.io/ui) - admi/adminadmin
+ * Gravitee API Management : [https://apim.gravitee.io/portal/](https://apim.gravitee.io/portal/) - admin/admin
  * Traefik Dashboard : [http://localhost:8080/dashboard/](http://localhost:8080/dashboard/)
 
 ## Play with API & login page
