@@ -1,0 +1,12 @@
+version: 1
+update_configs:
+  - package_manager: "java:maven"
+    directory: "/back"
+    update_schedule: "daily"
+    default_reviewers:
+      - "dktunited/githubadministrators"
+    default_assignees:
+      - "lusoalex"
+  - package_manager: "javascript"
+    directory: "/front"
+    update_schedule: "live"

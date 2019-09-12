@@ -1,6 +1,16 @@
+<h1>
+  <p align="center">
+    Securing an API - From basics to beyond
+  </p>
+</h1>
+<p align="center">
+  This repository is used to accompany and illustrate some security vulnerabilities highlighted during the <a href="https://alexandrefaria.net#talks" target="_blank"><b><i>Securing an API - From basics to beyond</i></b></a> talk.
+  <br><br>
+</p>
+
+
 **Table of Contents**
 
-- [Securing an API - From basics to beyond](#securing-an-api---from-basics-to-beyond)
   - [Requirements](#requirements)
   - [Architecture](#architecture)
   - [Important settings](#important-settings)
@@ -21,20 +31,13 @@
   - [Talk sessions](#talk-sessions)
 
 
-
-# Securing an API - From basics to beyond
-
-This repository is used to accompany and illustrate some security vulnerabilities highlighted during the _**[Securing an API - From basics to beyond](https://lusoalex.github.io#talks)**_ talk.
-
-![](https://lusoalex.github.io/assets/img/talk_secure_api.png)
-
 ## Requirements
 
  * [GIT](https://git-scm.com) - Seems obvious right... - 2.20.1+
  * [Docker](https://docs.docker.com/engine/installation) - Docker Engine release - 17.12.0+
  * [Docker-compose](https://docs.docker.com/compose/install) - compose - 1.23+
 
- To run api & angular web app :   
+
  * [Maven](https://maven.apache.org/) - Dependency Management / Back - 3.3.9+
  * [Java](https://www.java.com) - Compilation & runtime / Back - Java 8+
  * [Npm](https://www.npmjs.com/) - Dependency Management / Front - 6.8.0+
@@ -181,4 +184,6 @@ Any contributions are more than welcome. But before please pay attention to :
 
 ## Talk sessions
 
- * [2019 / Canada / Confoo.ca](https://confoo.ca/en/yul2019/session/securing-your-api-from-basics-to-beyond)
+ * [2019 / Canada - Montréal / Confoo.ca](https://confoo.ca/en/yul2019/session/securing-your-api-from-basics-to-beyond)
+ * 2019 / France - Lille / Club Tech @Euratech
+ * [2019 / France - Lille / Ch'ti JUG](https://www.meetup.com/fr-FR/ChtiJUG/events/264501689)
