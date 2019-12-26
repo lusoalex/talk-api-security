@@ -187,3 +187,4 @@ Any contributions are more than welcome. But before please pay attention to :
  * [2019 / Canada - Montréal / Confoo.ca](https://confoo.ca/en/yul2019/session/securing-your-api-from-basics-to-beyond)
  * 2019 / France - Lille / Club Tech @Euratech
  * [2019 / France - Lille / Ch'ti JUG](https://www.meetup.com/fr-FR/ChtiJUG/events/264501689)
+ * [2019 / France - Nancy / Lorraine JUG](https://www.lorrainejug.org/annonce/2019/09/30/secure-your-API-from-basics-to-beyond.html)
