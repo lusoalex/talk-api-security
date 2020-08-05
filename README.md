@@ -4,7 +4,8 @@
   </p>
 </h1>
 <p align="center">
-  This repository is used to accompany and illustrate some security vulnerabilities highlighted during the <a href="https://alexandrefaria.net#talks" target="_blank"><b><i>Securing an API - From basics to beyond</i></b></a> talk.
+  This repository is used to accompany and illustrate some security vulnerabilities highlighted during the <a href="https://alexandrefaria.net#talks" target="_blank"><b><i>Securing an API - From basics to beyond</i></b></a> talk.<br>
+  <i>It has been archived as it only serve the talk purpose and nothing else.</i>
   <br><br>
 </p>
 
